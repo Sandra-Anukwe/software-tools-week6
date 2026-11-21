@@ -1,0 +1,28 @@
+name: Compile and Test Under Unity
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout calculator code
+        uses: actions/checkout@v4
+        with:
+          path: main
+
+      - name: Checkout Unity
+        uses: actions/checkout@v4
+        with:
+          repository: ThrowTheSwitch/Unity
+          path: unity
+
+      - name: Compile tests
+        run: gcc -Wall -Wextra -Iunity/src main/test.c main/calc.c unity/src/unity.c -o tests
+
+      - name: Run tests
+        run: ./tests
